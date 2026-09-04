@@ -13,6 +13,13 @@
   text-wrap: balance;
 }
 
+/* The copyright row is a flex/justify-between pair that used to hold the theme
+   attribution on the right. With that removed the copyright sits alone on the
+   left, so push it to the right instead. */
+#site-footer > div.justify-between {
+  justify-content: flex-end;
+}
+
 /* Brand orange, the same value as the tetrahedron edges. */
 .heading-accent {
   color: #f5a623;
