@@ -5,10 +5,10 @@ file changes only when a decision settles.
 
 ## Vision
 
-A personal journal on AI and graphics computation — working notes on inference
-engines, kernels, renderers, and the measurements behind them. Long-form and
-technical, not tutorials. Joon writes the content; the repo exists to publish
-it with as little friction and as little ongoing maintenance as possible.
+A personal journal on computation in AI and graphics. Joon writes all content;
+the repo exists to publish it with as little friction and as little ongoing
+maintenance as possible. The site must handle code, math, and images well,
+since those are what the posts contain.
 
 ## Architecture
 

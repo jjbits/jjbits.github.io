@@ -1,20 +1,22 @@
 # jjbits.github.io
 
-Joon's personal journal on **AI and graphics computation** — inference engines,
-kernels, renderers, and the measurements behind them. A Hugo site with the
+Joon's personal journal on computation in AI and graphics. A Hugo site with the
 Blowfish theme, published to GitHub Pages at <https://jjbits.github.io/>.
-Joon decides what the posts say; this repo is the machinery that publishes them.
+This repo is the machinery that publishes the site. Joon writes what it says.
 
 ## Principles
 
+- **Never write site content. This is the rule that matters most here.**
+  Joon dictates every word that a reader sees: post text, titles, summaries,
+  taglines, the site description, the bio. Do not draft it, do not fill it with
+  placeholders, do not "improve" his wording. If copy is missing, ask — or leave
+  it empty. Formatting, markup, and fixing what he wrote are the job; authoring
+  is not.
 - Proper fixes only — no monkey patches. Find the root cause before writing
   code; when there are multiple viable approaches, present them and confirm
   before proceeding.
 - Never trust memory or prior docs over fresh evidence — verify against the
   actual build output and the live site before asserting "X works".
-- Never invent journal content. Post text comes from Joon. Fixing typos,
-  formatting, and markup is fine; writing claims, benchmark numbers, or
-  opinions on his behalf is not.
 - No AI/assistant names or signatures in git commits.
 
 ## Writing a post

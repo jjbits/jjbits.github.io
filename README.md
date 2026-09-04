@@ -1,6 +1,6 @@
 # jjbits.github.io
 
-Joon's journal on AI and graphics computation — <https://jjbits.github.io/>
+Source for <https://jjbits.github.io/>.
 
 Built with [Hugo](https://gohugo.io/) and the [Blowfish](https://blowfish.page/)
 theme (a Hugo Module, pinned in `go.mod`). Pushing to `main` builds and deploys
