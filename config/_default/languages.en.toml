@@ -3,16 +3,15 @@ locale = "en"
 label = "English"
 weight = 1
 
-# Title and description below are Joon's own wording from the previous
-# _config.yml, kept verbatim pending his instruction. Do not invent replacements.
-title = "Joon's homepage"
+# Set by Joon 2026-09-04. Reader-facing copy: do not reword without asking.
+title = "jjbits"
 
 [params]
   displayName = "EN"
   isoCode = "en"
   rtl = false
   dateFormat = "2 January 2006"
-  description = "Bookmark this to keep an eye on my project updates!"
+  description = "Journals on computations in AI"
   # "{ year }" is substituted by the theme with the current year at build time.
   copyright = "© { year } Joon Hwa Jung"
 

@@ -5,7 +5,7 @@ file changes only when a decision settles.
 
 ## Vision
 
-A personal journal on computation in AI and graphics. Joon writes all content;
+A personal journal on computation in AI. Joon writes all content;
 the repo exists to publish it with as little friction and as little ongoing
 maintenance as possible. The site must handle code, math, and images well,
 since those are what the posts contain.
@@ -38,7 +38,8 @@ explicit `hugo mod get -u`.
   with `jekyll-theme-minimal`. Hugo is a single static binary with no Ruby or
   npm dependency tree to rot, and builds the whole site in ~100 ms.
 - **Blowfish over PaperMod.** Chosen for its image-forward list layouts and
-  built-in math/gallery support, which suit graphics-heavy posts.
+  built-in math and figure support, which suit posts carrying plots and
+  diagrams.
 - **Page bundles over a shared static/ folder.** A post and its figures move,
   rename, and delete together.
 

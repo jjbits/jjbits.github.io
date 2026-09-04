@@ -9,7 +9,7 @@ The repo held a two-commit GitHub Pages stub from September 2022: a README and a
 `_config.yml` selecting `jekyll-theme-minimal`, served by the legacy Pages Jekyll
 builder.
 
-Rebuilt as a Hugo site for AI/graphics-computation journals:
+Rebuilt as a Hugo site for journals on computation in AI:
 
 - Scaffolded from the ii `ii-base` template, then rebased onto the existing
   GitHub history (the template had created an unrelated root commit).

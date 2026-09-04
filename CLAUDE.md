@@ -1,6 +1,6 @@
 # jjbits.github.io
 
-Joon's personal journal on computation in AI and graphics. A Hugo site with the
+Joon's personal journal on computation in AI. A Hugo site with the
 Blowfish theme, published to GitHub Pages at <https://jjbits.github.io/>.
 This repo is the machinery that publishes the site. Joon writes what it says.
 
