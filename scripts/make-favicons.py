@@ -7,10 +7,12 @@ The icons are derived assets -- regenerate them rather than editing the PNGs.
 
 Two families, because they have different jobs:
 
-  * Tab icons (favicon.svg/.ico, 16px, 32px) are transparent and draw their
-    vertex nodes in brand orange, so the mark stays legible on both light and
-    dark browser tab bars. Dark nodes vanish on a dark tab bar and read as
-    notches punched out of the edges.
+  * Tab icons (favicon.svg/.ico, 16px, 32px) are transparent, so they sit on an
+    unknown tab-bar colour. Their vertex nodes are a deep amber: the mark's own
+    near-black nodes score 16:1 against white but 1.1:1 against a dark tab bar,
+    where they vanish and read as notches cut out of the edges, while brand
+    orange nodes are invisible against the orange edges. #8A5200 clears both --
+    3.2:1 against the edges, 6.4:1 on white, 2.8:1 on a dark bar.
   * Touch/install icons (apple-touch-icon, android-chrome) must be opaque, so
     they use the dark brand tile and keep the mark's light-on-dark nodes.
 
@@ -25,6 +27,11 @@ OUT = "static"
 ORANGE = (245, 166, 35, 255)
 DARK = (31, 33, 37, 255)
 LIGHT = (229, 231, 235, 255)
+# Vertex node colour for the transparent tab icons; see the module docstring.
+NODE = (138, 82, 0, 255)
+# Nodes are proportionally larger than the logo's (which are 1.7x its stroke,
+# vs 3x here) because at 16-32px the logo's ratio is not resolvable.
+NODE_R = 0.085
 
 # Projected vertices in a 100x100 box, and the 6 edges; the last flag marks the
 # edge hidden behind the solid, which the logo draws dashed.
@@ -38,7 +45,7 @@ def draw(size, tile, ss=8):
     w = size * ss
     img = Image.new("RGBA", (w, w), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
-    dot = LIGHT if tile else ORANGE
+    dot = LIGHT if tile else NODE
     if tile:
         d.rounded_rectangle([0, 0, w - 1, w - 1], radius=int(w * 0.18), fill=DARK)
 
@@ -62,11 +69,10 @@ def draw(size, tile, ss=8):
         else:
             d.line([pa, pb], fill=ORANGE, width=sw)
 
-    if size >= 32:  # nodes merge into the edges below this
-        for v in range(4):
-            p = P(v)
-            r = max(1.2 * ss, size * 0.055 * ss)
-            d.ellipse([p[0] - r, p[1] - r, p[0] + r, p[1] + r], fill=dot)
+    for v in range(4):
+        p = P(v)
+        r = max(1.15 * ss, size * NODE_R * ss)  # floor keeps them on at 16px
+        d.ellipse([p[0] - r, p[1] - r, p[0] + r, p[1] + r], fill=dot)
 
     return img.resize((size, size), Image.LANCZOS)
 
@@ -89,11 +95,15 @@ def main():
             V[a][0], V[a][1], V[b][0], V[b][1],
             ' stroke-dasharray="1.2 4.9"' if hidden else "")
         for a, b, hidden in EDGES)
-    dots = "".join('<circle cx="{}" cy="{}" r="4.2"/>'.format(*V[v]) for v in range(4))
+    # The mark spans ~80 of the 100 viewBox units, matching the PNGs' 10% pad,
+    # so NODE_R and the stroke carry over as the same fractions.
+    r_svg = round(NODE_R * 100, 1)
+    dots = "".join('<circle cx="{}" cy="{}" r="{}"/>'.format(*V[v], r_svg)
+                   for v in range(4))
     open(f"{OUT}/favicon.svg", "w").write(
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">'
         '<g stroke="#F5A623" stroke-width="5.5" stroke-linecap="round" fill="none">'
-        + lines + '</g><g fill="#F5A623">' + dots + "</g></svg>")
+        + lines + '</g><g fill="#8A5200">' + dots + "</g></svg>")
 
     json.dump({"name": "jjbits", "short_name": "jjbits",
                "icons": [{"src": "/android-chrome-192x192.png", "sizes": "192x192",
