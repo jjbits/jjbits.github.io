@@ -43,6 +43,44 @@ Set `draft: false` to publish. Push to `main` and Actions deploys.
   rendered HTML actually contains `class=chroma` / `katex` — both failure modes
   are silent.
 
+## Header logo animation
+
+The header mark is a wireframe tetrahedron derived from the Ultimate Machine
+logo (`assets/img/ultimate-machine_logo.svg`), spinning about its own centre.
+
+- `assets/img/tetra-logo.svg` — the mark. Blowfish inlines SVG logos verbatim
+  into the header, so this file *is* the DOM the script animates. Its static
+  coordinates are the original logo pose, used as the no-JS and
+  reduced-motion fallback. Keep the `data-e` / `data-v` attributes.
+- `assets/js/tetra-logo.js` — the animation. Loaded via `extend-head.html`.
+- `assets/css/custom.css` — sizing, and lifting the vertex dots in dark mode.
+
+Three details that are easy to break:
+
+- **Uniform random axis.** Normalising three uniform samples is *not* uniform
+  on a sphere — it clusters toward the cube's corners. The code samples
+  `z ~ U(-1,1)` and the azimuth independently (Archimedes' hat-box theorem).
+- **Hidden edges are computed, not fixed.** An edge is dashed when both faces
+  meeting along it face away, which reduces to: both vertices the edge does
+  not touch have `z >= 0`. Verified against a normal-based method over 200k
+  orientations.
+- **Orientation is a quaternion**, not Euler angles, so a long-running tab
+  cannot drift or hit gimbal lock.
+
+Regression tests are not in the repo; they live in the session scratchpad.
+If you change this code, re-verify: rigid rotation, unit quaternion, hidden
+edge count always 0/1/3, and reduced-motion still bailing out.
+
+## Theme extension points used
+
+No Blowfish layouts are overridden. Everything hangs off supported hooks, so
+a theme upgrade should not conflict:
+
+- `layouts/partials/extend-head.html` — called by the theme if present. Note
+  its context is `.Site`, not a Page (`partialCached "extend-head.html" .Site`).
+- `assets/css/custom.css` — auto-appended to the theme's CSS bundle.
+- `params.logo` — inlined into the header when it is an SVG.
+
 ## Stack, and what may not change casually
 
 - Hugo **extended** (`brew install hugo`), pinned to `0.165.0` in the deploy

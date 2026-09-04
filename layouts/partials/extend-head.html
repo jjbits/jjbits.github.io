@@ -1,0 +1,13 @@
+{{/*
+  Blowfish calls this hook from head.html if it exists, so the header logo
+  animation needs no theme file overrides.
+  Context here is .Site (partialCached "extend-head.html" .Site), not a Page.
+*/}}
+{{ with resources.Get "js/tetra-logo.js" }}
+  {{ $js := . | resources.Minify | resources.Fingerprint ($.Params.fingerprintAlgorithm | default "sha512") }}
+  <script
+    defer
+    type="text/javascript"
+    src="{{ $js.RelPermalink }}"
+    integrity="{{ $js.Data.Integrity }}"></script>
+{{ end }}

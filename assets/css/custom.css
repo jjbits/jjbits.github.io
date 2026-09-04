@@ -1,0 +1,19 @@
+/* Appended to the theme's CSS bundle automatically by Blowfish's head.html. */
+
+/* Header logo: animated wireframe tetrahedron (assets/js/tetra-logo.js). */
+.tetra-logo {
+  display: block;
+  width: 44px;
+  height: 44px;
+  overflow: visible;
+}
+
+/* Vertex dots are near-black in the brand mark; lift them in dark mode so
+   they stay visible against the dark header. Edges keep the brand orange,
+   which reads well on both. */
+.tetra-logo .tetra-verts circle {
+  fill: #111111;
+}
+.dark .tetra-logo .tetra-verts circle {
+  fill: #e5e7eb;
+}
