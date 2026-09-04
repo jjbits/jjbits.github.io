@@ -36,6 +36,20 @@ hugo --gc --minify                # must build clean before pushing
 Then update `HUGO_VERSION` in `.github/workflows/deploy.yml` to match the local
 version, or CI and local will silently diverge.
 
+## Favicons
+
+Everything in `static/` is a derived asset generated from the tetrahedron mark.
+Regenerate rather than editing the PNGs:
+
+```bash
+python3 scripts/make-favicons.py     # needs Pillow
+```
+
+`layouts/partials/favicons.html` is a supported Blowfish hook, so the theme's
+own icons are replaced rather than shadowed.
+
+## Theme overrides
+
 `layouts/partials/home/profile.html` is a copy of the theme's file with a single
 edit (the tetrahedron inlined beside the `<h1>`). Diff it after any theme bump
 and re-apply that one change:
