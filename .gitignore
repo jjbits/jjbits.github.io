@@ -1,0 +1,10 @@
+# Hugo build output and caches
+/public/
+/resources/_gen/
+/.hugo_build.lock
+
+# Hugo module cache (modules are resolved from go.mod / go.sum)
+/_vendor/
+
+# macOS
+.DS_Store

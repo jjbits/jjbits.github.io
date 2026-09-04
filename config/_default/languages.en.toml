@@ -1,0 +1,21 @@
+disabled = false
+locale = "en"
+label = "English"
+weight = 1
+title = "Joon's Journal"
+
+[params]
+  displayName = "EN"
+  isoCode = "en"
+  rtl = false
+  dateFormat = "2 January 2006"
+  description = "Journals on AI and graphics computation."
+  copyright = "© Joon Jung"
+
+[params.author]
+  name = "Joon Jung"
+  headline = "Notes from the compute side of AI and graphics"
+  bio = "Journals on AI and graphics computation — inference engines, kernels, renderers, and the measurements behind them."
+  links = [
+    { github = "https://github.com/jjbits" },
+  ]

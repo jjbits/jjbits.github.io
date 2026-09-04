@@ -1,0 +1,81 @@
+name: Deploy site to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Least privilege needed to publish to Pages via OIDC.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time; never cancel an in-flight one mid-publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # Blowfish v3.6.0 supports a rolling window of the latest 4 Hugo releases
+      # (0.162.0-0.165.0 at time of writing). Pinned so CI matches local, and
+      # bumped deliberately -- see .design/operations.md.
+      HUGO_VERSION: 0.165.0
+      HUGO_ENVIRONMENT: production
+    steps:
+      - name: Install Hugo (extended)
+        run: |
+          wget -q -O "${{ runner.temp }}/hugo.deb" \
+            "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb"
+          sudo dpkg -i "${{ runner.temp }}/hugo.deb"
+          hugo version
+
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # Hugo needs full history for .Lastmod from git
+
+      # Blowfish is a Hugo Module, so the build needs a Go toolchain.
+      - name: Setup Go
+        uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+          cache: false # the Hugo module cache below is what actually matters
+
+      # Cold module downloads cost ~90s; go.sum pins the exact theme version.
+      - name: Cache Hugo modules
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/hugo_cache
+          key: ${{ runner.os }}-hugomod-${{ hashFiles('go.sum') }}
+          restore-keys: ${{ runner.os }}-hugomod-
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Build
+        run: hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: ./public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
