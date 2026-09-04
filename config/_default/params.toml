@@ -19,9 +19,8 @@ disableImageOptimization = false
 disableImageOptimizationMD = false
 disableTextInHeader = true
 
-# Inlined verbatim into the header by the theme because it is an SVG, then
-# animated by assets/js/tetra-logo.js. Derived from the Ultimate Machine mark.
-logo = "img/tetra-logo.svg"
+# No nav logo: the animated tetrahedron sits beside the home page <h1> instead,
+# inlined by layouts/partials/home/profile.html.
 
 hotlinkFeatureImage = false
 
@@ -36,7 +35,7 @@ fingerprintAlgorithm = "sha512"
 [footer]
   showMenu = true
   showCopyright = true
-  showThemeAttribution = true
+  showThemeAttribution = false # Blowfish is MIT; the credit is courtesy, not required
   showAppearanceSwitcher = true
   showScrollToTop = true
 

@@ -3,6 +3,18 @@
   animation needs no theme file overrides.
   Context here is .Site (partialCached "extend-head.html" .Site), not a Page.
 */}}
+
+{{/* Chakra Petch: chamfered technical face chosen by rasterising the Ultimate
+     Machine wordmark and comparing letterforms and stroke weight against
+     candidates. The wordmark measures stem/cap 0.202; Chakra Petch Bold is
+     0.193, and it shares the chamfered U, flat-apex A and squared C.
+     Only the weights actually used, and swap so text paints immediately. */}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&display=swap">
+
 {{ with resources.Get "js/tetra-logo.js" }}
   {{ $js := . | resources.Minify | resources.Fingerprint ($.Params.fingerprintAlgorithm | default "sha512") }}
   <script

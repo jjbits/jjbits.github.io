@@ -16,10 +16,14 @@ title = "Joon's homepage"
   # "{ year }" is substituted by the theme with the current year at build time.
   copyright = "© { year } Joon Hwa Jung"
 
+  # Home page <h1>, rendered as HTML by layouts/partials/home/profile.html so
+  # part of it can carry the brand colour. Kept separate from author.name,
+  # which feeds <meta name="author"> and the JSON-LD author and should stay a
+  # person's name.
+  homeHeading = 'About <span class="heading-accent">AI Computations</span> by jjbits'
+
 [params.author]
-  # Blowfish renders this as the profile homepage's <h1>; there is no separate
-  # heading param. It also feeds <meta name="author"> and the JSON-LD author.
-  name = "About AI Computations by jjbits"
+  name = "Joon Hwa Jung"
   links = [
     { github = "https://github.com/jjbits" },
   ]

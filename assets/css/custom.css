@@ -1,15 +1,48 @@
 /* Appended to the theme's CSS bundle automatically by Blowfish's head.html. */
 
-/* Header logo: animated wireframe tetrahedron (assets/js/tetra-logo.js). */
+/* Home page heading, set in Chakra Petch to echo the Ultimate Machine
+   wordmark: chamfered corners, flat-apex A, squared C, technical feel.
+   Weight 700, not 800 -- the wordmark measures stem/cap 0.202 (Bold), and
+   Chakra Petch Bold lands at 0.193. Deliberately NOT uppercased: the wordmark
+   is all caps, but "jjbits" is lowercase on purpose. */
+.home-heading {
+  font-family: "Chakra Petch", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-wrap: balance;
+}
+
+/* Brand orange, the same value as the tetrahedron edges. */
+.heading-accent {
+  color: #f5a623;
+}
+
+/* The heading is long; beside a 56px mark it would crowd a narrow phone. */
+@media (max-width: 480px) {
+  .home-heading {
+    font-size: 1.75rem;
+    line-height: 1.15;
+  }
+}
+
+/* Header logo: animated wireframe tetrahedron (assets/js/tetra-logo.js).
+   Sized to sit beside the heading rather than in the nav. */
 .tetra-logo {
   display: block;
-  width: 44px;
-  height: 44px;
+  width: 56px;
+  height: 56px;
   overflow: visible;
+}
+@media (min-width: 640px) {
+  .tetra-logo {
+    width: 72px;
+    height: 72px;
+  }
 }
 
 /* Vertex dots are near-black in the brand mark; lift them in dark mode so
-   they stay visible against the dark header. Edges keep the brand orange,
+   they stay visible against the dark background. Edges keep the brand orange,
    which reads well on both. */
 .tetra-logo .tetra-verts circle {
   fill: #111111;

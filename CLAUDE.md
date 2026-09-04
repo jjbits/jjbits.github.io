@@ -73,13 +73,22 @@ edge count always 0/1/3, and reduced-motion still bailing out.
 
 ## Theme extension points used
 
-No Blowfish layouts are overridden. Everything hangs off supported hooks, so
-a theme upgrade should not conflict:
+Mostly supported hooks, which a theme upgrade should not conflict with:
 
 - `layouts/partials/extend-head.html` — called by the theme if present. Note
   its context is `.Site`, not a Page (`partialCached "extend-head.html" .Site`).
 - `assets/css/custom.css` — auto-appended to the theme's CSS bundle.
-- `params.logo` — inlined into the header when it is an SVG.
+
+**One real override**, which upstream changes *can* silently break:
+
+- `layouts/partials/home/profile.html` — a verbatim copy of the theme's file
+  with one edit: the tetrahedron is inlined beside the `<h1>`. On a Blowfish
+  upgrade, diff it against the module copy and re-apply that one change, or
+  the home page will quietly miss upstream fixes. Command in
+  `.design/operations.md`.
+
+Note `params.logo` is deliberately unset — setting it puts a logo back in the
+top-left nav, which is not where this one belongs.
 
 ## Stack, and what may not change casually
 

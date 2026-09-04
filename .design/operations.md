@@ -36,6 +36,15 @@ hugo --gc --minify                # must build clean before pushing
 Then update `HUGO_VERSION` in `.github/workflows/deploy.yml` to match the local
 version, or CI and local will silently diverge.
 
+`layouts/partials/home/profile.html` is a copy of the theme's file with a single
+edit (the tetrahedron inlined beside the `<h1>`). Diff it after any theme bump
+and re-apply that one change:
+
+```bash
+BF="$(hugo config | grep -m1 cachedir | cut -d\' -f2)/modules/filecache/modules/pkg/mod/github.com/nunocoracao/blowfish/v3@<version>"
+diff -u "$BF/layouts/partials/home/profile.html" layouts/partials/home/profile.html
+```
+
 Blowfish's stock config files were copied into `config/_default/` and edited, so
 upstream config additions do not arrive automatically. After a major theme bump,
 diff against the module cache:
