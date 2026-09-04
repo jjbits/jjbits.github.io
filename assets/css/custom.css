@@ -57,3 +57,11 @@
 .dark .tetra-logo .tetra-verts circle {
   fill: #e5e7eb;
 }
+
+/* Post titles in the Recent list on the home page (Blowfish's simple article
+   link). Set on the <h2> itself, which carries no colour class of its own and
+   only inherits from the link, so this wins in light and dark mode without
+   fighting the theme's utility classes. */
+.article-link--simple h2 {
+  color: #0284c7; /* sky blue, darkened for light-mode contrast */
+}
