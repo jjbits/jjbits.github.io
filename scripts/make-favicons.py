@@ -30,8 +30,8 @@ LIGHT = (229, 231, 235, 255)
 # Vertex node colour for the transparent tab icons; see the module docstring.
 NODE = (138, 82, 0, 255)
 # Nodes are proportionally larger than the logo's (which are 1.7x its stroke,
-# vs 3x here) because at 16-32px the logo's ratio is not resolvable.
-NODE_R = 0.085
+# vs 2.5x here) because at 16-32px the logo's ratio is not resolvable.
+NODE_R = 0.07
 
 # Projected vertices in a 100x100 box, and the 6 edges; the last flag marks the
 # edge hidden behind the solid, which the logo draws dashed.
