@@ -8,7 +8,10 @@ defaultContentLanguage = "en"
 enableRobotsTXT = true
 summaryLength = 0
 
-buildDrafts = false
+# Drafts are published, not hidden: a post with draft = true goes live with
+# Blowfish's "Draft" badge (params.article.showDraftLabel). Set draft = false
+# on the post to drop the badge.
+buildDrafts = true
 buildFuture = false
 
 enableEmoji = true
