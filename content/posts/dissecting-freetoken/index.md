@@ -27,7 +27,7 @@ bite", and check the built HTML if unsure.
 
 [FreeToken](https://github.com/FlashML-org/FreeToken) has quickly attracted a lot of people's attention since its release. I got curious and wanted to understand it better. The following table summarizes the problems it is trying to solve, with the proposed solutions.
 
-| # | Phase | Problem (§2) | Solution (§3) | About |
+| # | Phase | Problem | Solution | About |
 |---|---|---|---|---|
 | 1 | Prefill | Whole expert pool must cross PCIe each prefill; GPU idles waiting | Full-layer double buffering: load layer *l+1* while computing layer *l* | experts |
 | 2 | Prefill | Agent context edits invalidate checkpoints → long re-prefill | Semantic anchors: place recurrent-state checkpoints at special-token boundaries (turns, tool calls, thinking blocks) | attention state |
