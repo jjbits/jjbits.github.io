@@ -21,7 +21,7 @@ showTableOfContents: true
 | 6 | Runtime | VRAM budget and KV-vs-expert split change mid-session | Rebuild the expert cache at any scheduler safe point without restart | GPU memory |
 | 7 | Runtime | Engine startup is slow and frequent | Load disk → final host layout then pin; skip GPU warmup (first request runs cold) | startup |
 
-I have an Ubuntu machine with about 250 GB of DDR4 memory and a solo RTX 4090 card with 24 GB VRAM. Using FreeToken, I ran DeepSeek-V4-Flash, which is a 284-billion-parameter model with a file size of 156 GB.
+I have an Ubuntu machine with about 250 GB of DDR4 memory and a solo RTX 4090 card with 24 GB VRAM. Using FreeToken, I ran DeepSeek-V4-Flash, which is a 284-billion-parameter model with a file size of 156 GB. The following table shows how FreeToken distributes the model components between DRAM and VRAM.
 
 | Memory | Capacity | What goes there | Size | Notes |
 |---|---|---|---|---|
