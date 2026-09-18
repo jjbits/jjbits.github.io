@@ -2,8 +2,8 @@
 title: "Dissecting FreeToken"
 date: 2026-09-04T16:22:46-07:00
 draft: false
-description: "The problems FreeToken solves and how, plus the memory map and speed of running DeepSeek-V4-Flash on a single RTX 4090."
-summary: "The problems FreeToken solves and how, plus the memory map and speed of running DeepSeek-V4-Flash on a single RTX 4090."
+description: "My FreeToken try on a 250 GB RAM & 24 GB VRAM machine"
+summary: "My FreeToken try on a 250 GB RAM & 24 GB VRAM machine"
 tags: ["FreeToken", "DeepSeek-V4-Flash", "MoE"]
 categories: ["LLM Serving"]
 showTableOfContents: true
