@@ -63,6 +63,10 @@ No work is in flight. Nothing is waiting to be pushed.
 - Verifying "no Draft badge" by grepping the built HTML: the badge renders as
   the bare word `Draft` on its own line inside a `<span>`, so grep for the
   word, not for `>Draft<`.
+- The deployed site is minified, so attribute quotes are dropped:
+  `<meta name=description content="...">`, `href=/tags/moe/`. A local
+  `hugo` build keeps the quotes. Grep the live site with quote-free patterns
+  or a false "missing" result follows.
 - Two markup failure modes are **silent**: KaTeX needs the `katex` shortcode on
   the page, and Chroma has no `cuda`/`ptx` lexer (use `cpp`). Both in CLAUDE.md.
 - Posts sort by the `date` field and `buildFuture = false`, so a future-dated
