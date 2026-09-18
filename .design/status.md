@@ -26,6 +26,16 @@ Published by deleting the archetype reminder comment, setting `draft: false`,
 and pushing. `buildDrafts = true` stays on, so future drafts still publish
 wearing the badge.
 
+Also closed: the heading orange stays at the brand value `#F5A623`. Joon
+accepted the 2.03:1 light-mode contrast rather than shift the hue; the
+darker `#B87400` alternative (3.79:1) is not wanted.
+
+The post's `description`, `summary`, `tags` and `categories` were filled on
+2026-09-18. Joon asked for suggestions built from his own wording, then picked:
+one sentence used for both description and summary, tags FreeToken,
+DeepSeek-V4-Flash and MoE, category "LLM Serving". Tag labels keep the casing
+typed, so reuse these spellings on later posts.
+
 ## 2026-09-04 — Migrated to Hugo + Blowfish
 
 The repo held a two-commit GitHub Pages stub from September 2022: a README and a

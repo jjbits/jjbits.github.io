@@ -2,10 +2,10 @@
 title: "Dissecting FreeToken"
 date: 2026-09-04T16:22:46-07:00
 draft: false
-description: ""
-summary: ""
-tags: []
-categories: []
+description: "The problems FreeToken solves and how, plus the memory map and speed of running DeepSeek-V4-Flash on a single RTX 4090."
+summary: "The problems FreeToken solves and how, plus the memory map and speed of running DeepSeek-V4-Flash on a single RTX 4090."
+tags: ["FreeToken", "DeepSeek-V4-Flash", "MoE"]
+categories: ["LLM Serving"]
 showTableOfContents: true
 ---
 
@@ -35,7 +35,7 @@ I have an Ubuntu machine with about 250 GB of DDR4 memory and a solo RTX 4090 ca
 | VRAM | | Prefill activations for one chunk | 1 to 3 GB | Sized to what is left after the above |
 | VRAM | | Free headroom | 2.7 to 4.7 GB | |
 
-Impressively, the DeepSeek V4.0 Flash model runs about 19 tok/s with a 131k context window for a single stream on this machine. The majority of the performance gain comes from the following:
+Impressively, the DeepSeek-V4-Flash model runs about 19 tok/s with a 131k context window for a single stream on this machine. The majority of the performance gain comes from the following:
 
 | # | Feature | What it does | Without it | With it |
 |---|---|---|---|---|
