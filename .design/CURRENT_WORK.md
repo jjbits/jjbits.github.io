@@ -1,6 +1,6 @@
 # Current Work
 
-_Last updated: 2026-09-18_
+_Last updated: 2026-10-06_
 
 ## Status
 
@@ -14,15 +14,31 @@ an intro paragraph, the problems-and-solutions table, a sentence on the
 machine and model, the memory-map table, a sentence on throughput, and the
 speed-features table. The archetype reminder comment is gone.
 
+**Second post is in progress, local only:** `content/posts/deepseek-v4-1-flash/`,
+"DeepSeek V4.1 Flash", `draft: true`. It holds only two diagrams,
+`architecture.png` and `one-block.png`, 4K PNGs on an opaque white background,
+copied from `~/projects/paper-reads/deepseekv41flash/diagrams/out/`
+(`V41Architecture_4k.png`, `OneBlock_4k.png`) on this Mac. They are stacked, each
+a `figure` shortcode with `figureClass="wide"`, which `assets/css/custom.css`
+widens to the whole content area (about 1024 px on laptops and up) while
+every other element keeps the 65ch text column; Joon will write paragraphs
+between them. The PNGs are cropped to their drawing plus 40 px (PIL,
+white-margin bounding box); the uncropped originals stay in the peer
+session's directory. Alt text
+is the file name; no captions, description, summary, tags or categories yet. The
+archetype reminder comment is still in. Not pushed.
+
 Drafts still publish. `buildDrafts = true` in `config/_default/hugo.toml`, so a
 post with `draft: true` goes live wearing Blowfish's "Draft" badge. Setting
 `draft: false` only removes the badge. This is what Joon means by "put it out
 with the draft tag".
 
-No work is in flight. Nothing is waiting to be pushed.
+The second post is in flight. Nothing is waiting to be pushed.
 
 ## Waiting on Joon
 
+- The words for the DeepSeek V4.1 Flash post: a caption for each diagram,
+  description, summary, tags, categories, and the body.
 - The next post. He dictates every reader-facing word; see the first principle
   in CLAUDE.md. Only spelling and grammar may be corrected, and each
   correction is reported back so he can veto it.
@@ -58,6 +74,37 @@ No work is in flight. Nothing is waiting to be pushed.
   this one (its SendMessage is blocked), so it writes to `notes/` there
   instead; the table is `notes/problems-and-solutions.md`, with provenance
   notes on which wording is the paper's and which is its own.
+- Diagrams for the DeepSeek V4.1 Flash post come from the `deepseekv41flash`
+  session on this Mac, which draws them with ManimGL (raster PNG only, 4K and
+  1080p). It also offers `ModelStack_4k.png` and `NGramLookup_4k.png` in the
+  same directory. Its provenance notes: redrawn from the technical report
+  (arXiv 2609.19969, Figure 3, sections 2.2, 2.3, 4.2.1), not from code; the
+  "only 4 layers produce main KV" line and the "what runs when" table are its
+  own reading of the paper. Joon should review those two before publishing.
+- Blowfish renders `![alt](f.png "Title")` with the bracket text as `alt` and
+  the quoted title as the visible `<figcaption>`; PNGs get 800 and 1280 px
+  variants plus click-to-zoom to the original, SVGs are used as-is.
+- Wide figures: `{{< figure src=... alt=... figureClass="wide" >}}` spans the
+  content area; the rule in `custom.css` lifts `max-w-prose` on an
+  `.article-content` that `:has(> figure.wide)` and re-applies 65ch to its
+  other children. Verified 2026-10-06 with a throwaway build holding a dummy
+  paragraph between the figures: the paragraph stayed at 65ch. The theme's
+  `figure` shortcode emits the same responsive, zoomable markup as the
+  Markdown hook (800/1280 px variants, zoom to the original) and, being a
+  block, gets no `<p>` wrapper. Raw HTML in Markdown also works because
+  `markup.toml` sets `unsafe = true`.
+- Side by side was tried and rejected 2026-10-06: even at the full content
+  width each diagram got about 504 px and the fine print needed the zoom.
+  Blowfish's `gallery` shortcode is a Packery (JS masonry) grid that serves
+  images at full size with no responsive variants; a flex div around two
+  `figure` shortcodes was the lighter way, if it ever comes back.
+- Diagram size, measured 2026-10-06: the text column is 65ch (about 735 px);
+  the page container (`body.max-w-7xl` minus `lg:px-32`) is 1024 px on
+  laptops and up, the same edges as the header. A wide figure gets the
+  latter. The only larger option is full-bleed to the viewport, which breaks
+  the site frame; redrawing with larger type is the other lever (the peer
+  session can). The theme's srcset tops out at 1280 px, so a 1024 px figure
+  is slightly soft on a retina screen; zoom shows the 4K original.
 - To let him read a post before publishing, run `hugo server -D` and give him
   `http://localhost:1313/posts/<slug>/`; it live-reloads on every edit.
 - Verifying "no Draft badge" by grepping the built HTML: the badge renders as
