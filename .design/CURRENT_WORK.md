@@ -26,14 +26,16 @@ between them. The PNGs are cropped to their drawing plus 40 px (PIL,
 white-margin bounding box); the uncropped originals stay in the peer
 session's directory. Alt text
 is the file name; no captions, description, summary, tags or categories yet. The
-archetype reminder comment is still in. Not pushed.
+archetype reminder comment is still in. Live since 2026-10-06 wearing the
+Draft badge.
 
 Drafts still publish. `buildDrafts = true` in `config/_default/hugo.toml`, so a
 post with `draft: true` goes live wearing Blowfish's "Draft" badge. Setting
 `draft: false` only removes the badge. This is what Joon means by "put it out
 with the draft tag".
 
-The second post is in flight. Nothing is waiting to be pushed.
+The second post is in flight; what exists is deployed. Nothing is waiting
+to be pushed.
 
 ## Waiting on Joon
 
