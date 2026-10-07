@@ -65,3 +65,20 @@
 .article-link--simple h2 {
   color: #0284c7; /* sky blue, darkened for light-mode contrast */
 }
+
+/* Wide figures. A figure shortcode with figureClass="wide" spans the whole
+   content area (the page container, 1024 px on laptops and up, the same
+   edges as the header) instead of the 65ch text column. Blowfish caps the
+   column with max-w-prose on .article-content; on a page that holds a wide
+   figure, lift that cap and put it back on every other direct child, so
+   paragraphs keep their measure. The width comes from the real container,
+   so a wide figure never runs under a table of contents (Blowfish lays that
+   out as a sibling column) and no viewport arithmetic is involved. The
+   theme's srcset tops out at 1280 px, so on a retina screen the in-place
+   image is a little soft; click-to-zoom shows the original. */
+.article-content:has(> figure.wide) {
+  max-width: none;
+}
+.article-content:has(> figure.wide) > :not(figure.wide) {
+  max-width: 65ch;
+}
