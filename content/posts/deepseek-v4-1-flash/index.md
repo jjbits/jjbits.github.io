@@ -25,6 +25,6 @@ Both markup failure modes above are silent -- see CLAUDE.md, "Markup rules that
 bite", and check the built HTML if unsure.
 -->
 
-{{< figure src="architecture.png" alt="architecture" figureClass="wide" >}}
+{{< figure src="model-stack.png" alt="model-stack" figureClass="wide" >}}
 
 {{< figure src="one-block.png" alt="one-block" figureClass="wide" >}}

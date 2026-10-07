@@ -14,11 +14,11 @@ an intro paragraph, the problems-and-solutions table, a sentence on the
 machine and model, the memory-map table, a sentence on throughput, and the
 speed-features table. The archetype reminder comment is gone.
 
-**Second post is in progress, local only:** `content/posts/deepseek-v4-1-flash/`,
+**Second post is in progress, live as a draft:** `content/posts/deepseek-v4-1-flash/`,
 "DeepSeek V4.1 Flash", `draft: true`. It holds only two diagrams,
-`architecture.png` and `one-block.png`, 4K PNGs on an opaque white background,
+`model-stack.png` and `one-block.png`, 4K PNGs on an opaque white background,
 copied from `~/projects/paper-reads/deepseekv41flash/diagrams/out/`
-(`V41Architecture_4k.png`, `OneBlock_4k.png`) on this Mac. They are stacked, each
+(`ModelStack_4k.png`, `OneBlock_4k.png`) on this Mac. They are stacked, each
 a `figure` shortcode with `figureClass="wide"`, which `assets/css/custom.css`
 widens to the whole content area (about 1024 px on laptops and up) while
 every other element keeps the 65ch text column; Joon will write paragraphs
@@ -78,11 +78,15 @@ to be pushed.
   notes on which wording is the paper's and which is its own.
 - Diagrams for the DeepSeek V4.1 Flash post come from the `deepseekv41flash`
   session on this Mac, which draws them with ManimGL (raster PNG only, 4K and
-  1080p). It also offers `ModelStack_4k.png` and `NGramLookup_4k.png` in the
-  same directory. Its provenance notes: redrawn from the technical report
-  (arXiv 2609.19969, Figure 3, sections 2.2, 2.3, 4.2.1), not from code; the
-  "only 4 layers produce main KV" line and the "what runs when" table are its
-  own reading of the paper. Joon should review those two before publishing.
+  1080p). Diagram 1 is `ModelStack_4k.png` (all 40 blocks, one row each),
+  which Joon chose on 2026-10-06 over the abbreviated Figure-3 view
+  `V41Architecture_4k.png`; that one and `NGramLookup_4k.png` stay available
+  in the same directory. Provenance per the peer: the model stack follows
+  sections 4.2.1 and 2.2 of the technical report (arXiv 2609.19969), not
+  code, and its per-block numbering (which blocks are Full, Reuse, Reindex)
+  is the peer's expansion of the paper's grouped description; the block
+  diagram follows sections 2.2, 2.3 and 4.2.1, and its "what runs when"
+  table is the peer's paraphrase. Joon should review both before publishing.
 - Blowfish renders `![alt](f.png "Title")` with the bracket text as `alt` and
   the quoted title as the visible `<figcaption>`; PNGs get 800 and 1280 px
   variants plus click-to-zoom to the original, SVGs are used as-is.
