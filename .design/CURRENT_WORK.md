@@ -1,6 +1,6 @@
 # Current Work
 
-_Last updated: 2026-10-06_
+_Last updated: 2026-10-08_
 
 ## Status
 
@@ -50,6 +50,9 @@ to be pushed.
 - `config/_default/` — tuned for long technical posts: TOC, reading progress,
   code copy button, tags, 10 posts per page. Title "jjbits", description
   "Journals on computations in AI", both Joon's wording.
+- `content/_index.md` — the home page bio, one paragraph under the GitHub
+  icon in Blowfish's profile layout. Joon's wording, 2026-10-08, with three
+  grammar corrections he approved. Reader-facing copy: do not reword.
 - Home page: animated wireframe tetrahedron beside the heading, linking home.
   Heading in Chakra Petch Bold, "AI Computations" in brand orange `#F5A623`.
   Settled 2026-09-18: it stays the exact brand value, matching the tetrahedron
