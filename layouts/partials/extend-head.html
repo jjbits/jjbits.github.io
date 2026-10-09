@@ -8,12 +8,13 @@
      Machine wordmark and comparing letterforms and stroke weight against
      candidates. The wordmark measures stem/cap 0.202; Chakra Petch Bold is
      0.193, and it shares the chamfered U, flat-apex A and squared C.
-     Only the weights actually used, and swap so text paints immediately. */}}
+     Only the weights actually used, and swap so text paints immediately.
+     Nunito 600: the home page intro paragraph (rule in custom.css). */}}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
   rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&display=swap">
+  href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Nunito:wght@600&display=swap">
 
 {{ with resources.Get "js/tetra-logo.js" }}
   {{ $js := . | resources.Minify | resources.Fingerprint ($.Params.fingerprintAlgorithm | default "sha512") }}

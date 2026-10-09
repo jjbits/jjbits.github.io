@@ -82,3 +82,20 @@
 .article-content:has(> figure.wide) > :not(figure.wide) {
   max-width: 65ch;
 }
+
+/* Home page intro: the bio paragraph from content/_index.md, rendered by the
+   profile layout in the prose section right after the header that holds the
+   home heading. Nunito in teal for a friendlier voice than the body face;
+   Joon chose it on 2026-10-08 from seven screenshotted candidates. Scoped
+   through .home-heading so post bodies, which also sit in a prose section,
+   are untouched. Teal measures 5.5:1 on white, the light tint 10.2:1 on the
+   dark ground. */
+header:has(.home-heading) + section.prose p {
+  font-family: "Nunito", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #0f766e;
+}
+.dark header:has(.home-heading) + section.prose p {
+  color: #5eead4;
+}

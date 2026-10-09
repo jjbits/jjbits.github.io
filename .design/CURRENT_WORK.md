@@ -52,7 +52,11 @@ to be pushed.
   "Journals on computations in AI", both Joon's wording.
 - `content/_index.md` — the home page bio, one paragraph under the GitHub
   icon in Blowfish's profile layout. Joon's wording, 2026-10-08, with three
-  grammar corrections he approved. Reader-facing copy: do not reword.
+  grammar corrections he approved. Reader-facing copy: do not reword. Set in
+  Nunito 600, teal `#0f766e` (light) / `#5eead4` (dark), chosen by Joon on
+  2026-10-08 from seven screenshotted candidates (Nunito, Quicksand, Caveat,
+  Patrick Hand, Baloo 2, Comfortaa, and the default); rule in `custom.css`,
+  font link in `extend-head.html`.
 - Home page: animated wireframe tetrahedron beside the heading, linking home.
   Heading in Chakra Petch Bold, "AI Computations" in brand orange `#F5A623`.
   Settled 2026-09-18: it stays the exact brand value, matching the tetrahedron
