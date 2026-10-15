@@ -6,6 +6,14 @@
   pageRef = "posts"
   weight = 10
 
+# The GPU atlas is a static page (static/gpu-atlas/), not Hugo content, so
+# it is linked by url rather than pageRef. Name is Joon's wording.
+[[main]]
+  name = "GPU Atlas"
+  title = "GPU Atlas" # page-backed entries get this from the page; a url entry needs it set
+  url = "/gpu-atlas/"
+  weight = 15
+
 [[main]]
   name = "Tags"
   pageRef = "tags"
