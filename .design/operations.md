@@ -72,3 +72,26 @@ diff -ru "$(hugo config | grep -m1 cachedir | cut -d\' -f2)/modules/filecache/mo
 - GitHub: `gh` CLI authenticated on the macbook as `jjbits`.
 - No secrets in this repo. Pages deploys with the workflow's OIDC token; no PAT
   is stored.
+
+## Updating the GPU atlas page
+
+The atlas is built on ml-engine, in `~/projects/computescope`, by the
+computescope session. Its public build drops the "This machine" entry (that
+is ml-engine's own GPU), opens on the plain RTX 4090, and carries a header
+link back to the blog:
+
+```bash
+ssh ml-engine.local 'cd ~/projects/computescope && .venv/bin/python -m computescope.atlas.build_prototype .csx/atlas/gpu-atlas.html --no-this-machine --default-product rtx_4090 --site-link "jjbits=/"'
+scp ml-engine.local:~/projects/computescope/.csx/atlas/gpu-atlas.html /tmp/gpu-atlas.html
+python3 -I scripts/wrap-atlas.py /tmp/gpu-atlas.html     # writes static/gpu-atlas/index.html
+```
+
+The wrapper expects exactly one cdnjs Three.js `<script src>` in the raw
+page and fails loudly otherwise; a new Three.js version means vendoring it
+under `static/vendor/` (verify against the cdnjs SRI hash) and updating
+`LOCAL_SRC` in the script. The badge (`assets/js/gpu-die-badge.js`,
+`assets/img/gpu-die-badge.png`) comes from the same project's
+`.csx/atlas/`; copy both when it changes. After either update, build and
+check the page renders in headless Chrome with software WebGL
+(`--use-angle=swiftshader --enable-unsafe-swiftshader`), light and dark.
+
