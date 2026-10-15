@@ -1,9 +1,15 @@
 {{/*
   Override of Blowfish's home/profile.html.
 
-  Only change from upstream: the animated tetrahedron (assets/img/tetra-logo.svg,
-  driven by assets/js/tetra-logo.js) is inlined beside the <h1> instead of
-  sitting in the top-left nav. Everything else is the theme's markup verbatim.
+  Two changes from upstream, both inside <header>:
+  1. The animated tetrahedron (assets/img/tetra-logo.svg, driven by
+     assets/js/tetra-logo.js) is inlined beside the <h1> instead of sitting in
+     the top-left nav.
+  2. The GPU atlas button above the heading row: computescope's animated
+     RTX 4090 die (assets/js/gpu-die-badge.js, mounted by gpu-badge-mount.js
+     over a PNG of its first pose) linking to the atlas page under
+     static/gpu-atlas/. Its scripts load deferred here, home page only.
+  Everything else is the theme's markup verbatim.
 
   Re-diff this against the theme on a Blowfish upgrade -- see
   .design/operations.md.
@@ -38,6 +44,20 @@
           fetchpriority="high"
           src="{{ $final.RelPermalink }}"
           data-zoom-src="{{ $squareImage.RelPermalink }}">
+      {{ end }}
+    {{ end }}
+    <a href="{{ "gpu-atlas/" | relURL }}" class="gpu-badge" aria-label="GPU Atlas">
+      <div class="gpu-badge-stage">
+        {{ with resources.Get "img/gpu-die-badge.png" }}
+          <img src="{{ .RelPermalink }}" alt="" width="400" height="400" loading="eager" decoding="async">
+        {{ end }}
+      </div>
+    </a>
+    <script defer src="{{ "vendor/three-0.160.0/three.min.js" | relURL }}"></script>
+    {{ range slice "js/gpu-die-badge.js" "js/gpu-badge-mount.js" }}
+      {{ with resources.Get . }}
+        {{ $js := . | resources.Minify | resources.Fingerprint ($.Site.Params.fingerprintAlgorithm | default "sha512") }}
+        <script defer src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}"></script>
       {{ end }}
     {{ end }}
     <div class="flex flex-row flex-nowrap items-center justify-center gap-3 sm:gap-5">
