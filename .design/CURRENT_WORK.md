@@ -1,6 +1,6 @@
 # Current Work
 
-_Last updated: 2026-10-08_
+_Last updated: 2026-10-14_
 
 ## Status
 
@@ -34,8 +34,23 @@ post with `draft: true` goes live wearing Blowfish's "Draft" badge. Setting
 `draft: false` only removes the badge. This is what Joon means by "put it out
 with the draft tag".
 
-The second post is in flight; what exists is deployed. Nothing is waiting
-to be pushed.
+**GPU atlas page and home-page button live (deployed 2026-10-14).**
+computescope's GPU architecture atlas is wrapped as `static/gpu-atlas/index.html`
+(public build: no "This machine" entry, opens on the RTX 4090, header link
+"jjbits" back to `/`), Three.js 0.160.0 vendored under `static/vendor/`, and
+the RTX 4090 die badge sits above the home heading as a button linking to
+`/gpu-atlas/`. Badge v2 (2026-10-14, at Joon's request) animates compute
+activity inside the die, a seeded 8 s kernel loop; the orbit was removed
+the same day at Joon's request (edited here, peer informed). The header
+menu also carries "GPU Atlas" between Posts and Tags (`menus.en.toml`,
+url entry, Joon's wording). Verified in a scratch build: home in light, dark,
+phone and no-WebGL (PNG fallback), atlas in light and dark with the vendored
+script. See CLAUDE.md "GPU atlas page" and `.design/operations.md`.
+One wording Joon may veto: the button's
+accessible name is "GPU Atlas", the tool's own title; it has no visible
+label.
+
+The second post is in flight; what exists there is deployed.
 
 ## Waiting on Joon
 

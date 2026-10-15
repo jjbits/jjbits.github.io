@@ -71,6 +71,31 @@ Regression tests are not in the repo; they live in the session scratchpad.
 If you change this code, re-verify: rigid rotation, unit quaternion, hidden
 edge count always 0/1/3, and reduced-motion still bailing out.
 
+## GPU atlas page and the home-page button
+
+The GPU architecture atlas is computescope's work (ml-engine,
+`~/projects/computescope`, `computescope/atlas/`); this site only hosts it.
+
+- `static/gpu-atlas/index.html` — the atlas, wrapped as a standalone page by
+  `scripts/wrap-atlas.py`. **Generated: never hand-edit.** The wrapper adds
+  the document skeleton, the favicon, the host's body reset, a one-line
+  script that carries the blog's remembered appearance into the page, and
+  points the one `<script src>` at the vendored Three.js. Update procedure
+  in `.design/operations.md`.
+- `static/vendor/three-0.160.0/` — Three.js UMD plus its MIT licence,
+  verified against the cdnjs SRI hash when vendored. Used by the atlas page
+  and the badge. The UMD build logs a deprecation warning on load; harmless.
+- `assets/js/gpu-die-badge.js`, `assets/img/gpu-die-badge.png` — the
+  RTX 4090 die, from the same project, running a seeded 8 s "kernel" loop
+  (PCIe pulse, memory and L2 load, a wavefront across the GPCs with blocks
+  flickering as warps retire, store, idle) in a fixed pose, and a PNG of
+  its mid-compute pose for no-JS, no-WebGL and reduced-motion readers. `assets/js/gpu-badge-mount.js` mounts it
+  into the home page and follows Blowfish's `.dark` class. Markup is the
+  second edit in `layouts/partials/home/profile.html`; sizing and the
+  fallback swap are in `custom.css`. Scripts load deferred, home page only.
+- The badge honours `prefers-reduced-motion` (static pose) and stops its
+  loop off-screen; both live inside the badge script, not here.
+
 ## Theme extension points used
 
 Mostly supported hooks, which a theme upgrade should not conflict with:
@@ -82,9 +107,10 @@ Mostly supported hooks, which a theme upgrade should not conflict with:
 **One real override**, which upstream changes *can* silently break:
 
 - `layouts/partials/home/profile.html` — a verbatim copy of the theme's file
-  with one edit: the tetrahedron is inlined beside the `<h1>`. On a Blowfish
-  upgrade, diff it against the module copy and re-apply that one change, or
-  the home page will quietly miss upstream fixes. Command in
+  with two edits inside `<header>`: the tetrahedron inlined beside the
+  `<h1>`, and the GPU atlas button above the heading row. On a Blowfish
+  upgrade, diff it against the module copy and re-apply those two changes,
+  or the home page will quietly miss upstream fixes. Command in
   `.design/operations.md`.
 
 Note `params.logo` is deliberately unset — setting it puts a logo back in the
