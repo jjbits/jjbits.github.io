@@ -92,6 +92,18 @@ under `static/vendor/` (verify against the cdnjs SRI hash) and updating
 `LOCAL_SRC` in the script. The badge (`assets/js/gpu-die-badge.js`,
 `assets/img/gpu-die-badge.png`) comes from the same project's
 `.csx/atlas/`; copy both when it changes. After either update, build and
-check the page renders in headless Chrome with software WebGL
-(`--use-angle=swiftshader --enable-unsafe-swiftshader`), light and dark.
+check the page renders in headless Chrome, light and dark (dark: put
+`data-theme="dark"` on `<html>` in a scratch copy).
+
+Headless Chrome notes (verified 2026-10-21, Chrome 155): plain
+`--headless=new` with no GPU flags gives hardware WebGL on this Mac; the
+older software-WebGL flags (`--use-angle=swiftshader
+--enable-unsafe-swiftshader`) now disable WebGL entirely and the atlas
+boots to an empty page. CSS transitions run on real time, not the virtual
+clock, so a screenshot right after opening a pane catches it mid-slide;
+disable transitions in the scratch copy for layout checks. To land on an
+SM level without clicking, set `window.__atlasStart` to a path array before
+the main script, e.g. `[{level:"die",pid:"rtx_4090",di:0},{level:"gpc",...,g:0},
+{level:"tpc",...,t:0},{level:"sm",...,s:0}]`; the Residency pane opens with
+`document.getElementById("resBtn").click()` after it.
 

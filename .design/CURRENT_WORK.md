@@ -1,6 +1,6 @@
 # Current Work
 
-_Last updated: 2026-10-14_
+_Last updated: 2026-10-21_
 
 ## Status
 
@@ -34,7 +34,14 @@ post with `draft: true` goes live wearing Blowfish's "Draft" badge. Setting
 `draft: false` only removes the badge. This is what Joon means by "put it out
 with the draft tag".
 
-**GPU atlas page and home-page button live (deployed 2026-10-14).**
+**Atlas R1 deployed 2026-10-21: the Residency pane.** The rebuilt atlas
+from computescope adds a compute-capability table to the catalog and, at
+the SM level, a "Residency" button opening a pane with the resident-blocks
+limits and occupancy (design approved by Joon via the cudabits session).
+Re-wrapped with `scripts/wrap-atlas.py` unchanged; verified in headless
+Chrome (hardware WebGL, see operations.md) for the 4090 light and dark and
+the H100. Earlier: **GPU atlas page and home-page button live (deployed
+2026-10-14).**
 computescope's GPU architecture atlas is wrapped as `static/gpu-atlas/index.html`
 (public build: no "This machine" entry, opens on the RTX 4090, header link
 "jjbits" back to `/`), Three.js 0.160.0 vendored under `static/vendor/`, and
