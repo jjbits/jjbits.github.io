@@ -101,7 +101,9 @@ older software-WebGL flags (`--use-angle=swiftshader
 --enable-unsafe-swiftshader`) now disable WebGL entirely and the atlas
 boots to an empty page. CSS transitions run on real time, not the virtual
 clock, so a screenshot right after opening a pane catches it mid-slide;
-disable transitions in the scratch copy for layout checks. To land on an
+pass `--force-prefers-reduced-motion`, which the page's reduced-motion
+rule turns into no transitions (or disable transitions in the scratch
+copy). To land on an
 SM level without clicking, set `window.__atlasStart` to a path array before
 the main script, e.g. `[{level:"die",pid:"rtx_4090",di:0},{level:"gpc",...,g:0},
 {level:"tpc",...,t:0},{level:"sm",...,s:0}]`; the Residency pane opens with
