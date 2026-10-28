@@ -1,6 +1,6 @@
 # Current Work
 
-_Last updated: 2026-10-21_
+_Last updated: 2026-10-28_
 
 ## Status
 
@@ -34,7 +34,14 @@ post with `draft: true` goes live wearing Blowfish's "Draft" badge. Setting
 `draft: false` only removes the badge. This is what Joon means by "put it out
 with the draft tag".
 
-**Atlas R1 deployed 2026-10-21: the Residency pane.** The rebuilt atlas
+**Atlas R2 deployed 2026-10-28.** Only the Residency pane changed, to
+Joon's 2026-10-25 reference: one-warp figure, scheduler boxes in the SM
+schematic, register file as "N regs (32 bits) = F KB" with a three-level
+zoom, calculator and live figures in one panel, flow figure and closing
+note removed. Same flags, same wrapper; verified for the 4090, H100 (dark),
+Rubin (not published), and the calculator panel. Joon said "go" in this
+session after the cudabits relay. **Atlas R1 deployed 2026-10-21: the
+Residency pane.** The rebuilt atlas
 from computescope adds a compute-capability table to the catalog and, at
 the SM level, a "Residency" button opening a pane with the resident-blocks
 limits and occupancy (design approved by Joon via the cudabits session).

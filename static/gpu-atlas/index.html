@@ -113,6 +113,7 @@ try{var a=localStorage.getItem("appearance");if(a==="dark"||a==="light")document
   #resPane h3.section { margin: 4px 0 -6px; font-size: 16px; font-weight: 600; }
   #resPane .panel { background: var(--c-bg); border: 1px solid var(--c-line); border-radius: 6px; padding: 12px 14px; }
   #resPane .kicker { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-muted); margin-bottom: 6px; }
+  #resPane .kicker.res-rule { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--c-line); }
   #resPane h3 { margin: 0 0 2px; font-size: 15px; font-weight: 600; }
   #resPane dl.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 6px 18px; margin: 0; font-size: 13px; }
   #resPane dl.facts > div { display: flex; flex-direction: column; gap: 1px; }
@@ -156,9 +157,8 @@ try{var a=localStorage.getItem("appearance");if(a==="dark"||a==="light")document
   #resPane svg .bind { fill: none; stroke: var(--c-hover); stroke-width: 2; }
   #resPane svg .nofit { fill: none; stroke: var(--c-ghost); stroke-dasharray: 3 3; }
   #resPane svg .lim-threads { fill: var(--c-sm); } #resPane svg .lim-regs { fill: var(--c-cache); } #resPane svg .lim-smem { fill: var(--c-mem); } #resPane svg .lim-cap { fill: var(--c-lane_fp64); }
-  #resPane svg .arrow { fill: none; stroke: var(--c-muted); stroke-width: 1.2; marker-end: url(#res-ah); }
-  #resPane svg .arrow.on { stroke: var(--c-text); stroke-width: 1.6; }
   #resPane svg .axis { stroke: var(--c-line); }
+  #resPane svg .grid { stroke: var(--c-line); stroke-dasharray: 2 3; }
   #resPane svg .hatch { fill: var(--c-off); opacity: 0.45; } #resPane svg .issue { fill: var(--c-accent); } #resPane svg .tc { fill: var(--c-tensor); } #resPane svg .lane { fill: var(--c-lane2); } #resPane svg .poolbg { fill: var(--c-mem); opacity: 0.3; }
   @container (max-width: 700px) { #resPane .def { grid-template-columns: 1fr; } }
   @container (max-width: 440px) { #resPane .live { grid-template-columns: 1fr; } }
@@ -192,20 +192,20 @@ try{var a=localStorage.getItem("appearance");if(a==="dark"||a==="light")document
       </section>
       <section id="resPane" aria-label="Residency" aria-hidden="true" inert>
         <div class="res-head"><div><h2 class="res-title">Resident blocks per SM</h2><div class="res-sub" id="res-sub"></div></div><button class="up" id="resClose" type="button">Close</button></div>
-        <p class="res-intro">An SM holds as many copies of a block as its tightest resource allows. The resources are four: warp slots, the register file, shared memory, and the block table, each explained below. Those blocks' warps fill the SM's warp slots, and the filled fraction is the occupancy. The second half takes a kernel's block and fills the four resources with it.</p>
+        <p class="res-intro">An SM holds as many copies of a block as its tightest resource allows. The resources are four: warp slots, the register file, shared memory, and the block table, each explained below. Those blocks' warps fill the SM's warp slots, and the filled fraction is the occupancy.</p>
         <div class="res-banner" id="res-banner" hidden></div>
         <section class="panel" aria-label="SM limits">
           <div class="kicker">SM limits, this GPU</div>
           <dl class="facts" id="res-facts"></dl>
         </section>
         <section class="panel" aria-label="What is limited, and why">
-          <h3>What is limited, and why <span class="basis illustrative" id="res-illChip" hidden>illustrative</span></h3>
-          <p class="idea">An SM runs blocks. Before a block can start on an SM, four things must have room for it: warp slots, registers, shared memory, and the block table. If any one of them is full, the block waits for another SM or for a block to finish. This section says what each of the four is, and where it lives in the SM.</p>
+          <h3>What is limited, and why <span class="basis illustrative" id="res-illChip" hidden>illustrative</span><span class="basis" id="res-lessonChip" hidden title="the worst basis among this GPU's SM numbers in the lesson (see the facts above)"></span></h3>
+          <p class="idea">An SM runs blocks. Before a block can start on an SM, four things must have room for it: warp slots, registers, shared memory, and the block table. If any one of them is full, the block waits for another SM or for a block to finish.</p>
           <div class="fig" id="res-figIntro"></div>
           <div class="defs" id="res-defs"></div>
         </section>
-        <h3 class="section">This kernel on this SM</h3>
-        <section class="panel" aria-label="Kernel inputs">
+        <h3 class="section">SM resources occupancy calculator</h3>
+        <section class="panel" aria-label="SM resources occupancy calculator">
           <div class="kicker">Kernel</div>
           <div class="inputs">
             <label>threads per block<input id="res-tpb" type="number" min="32" max="1024" step="32" value="256"></label>
@@ -218,9 +218,7 @@ try{var a=localStorage.getItem("appearance");if(a==="dark"||a==="light")document
           </div>
           <div class="result" id="res-result"></div>
           <div class="note" style="margin-top:6px">Registers per thread come from the compiler (ptxas -v); 32 is an assumption for both presets. Register use is rounded up to the allocation unit per warp, as the hardware does.</div>
-        </section>
-        <section class="panel" aria-label="The four resources, filled">
-          <div class="kicker">The four resources, filled by this kernel's blocks</div>
+          <div class="kicker res-rule">The four resources, filled by this kernel's blocks</div>
           <div class="live">
             <figure><h4><i class="sw" style="background:var(--c-sm)"></i>Warp slots</h4><div class="fig" id="res-liveSlots"></div></figure>
             <figure><h4><i class="sw" style="background:var(--c-cache)"></i>Register file</h4><div class="fig" id="res-liveRegs"></div></figure>
@@ -229,11 +227,6 @@ try{var a=localStorage.getItem("appearance");if(a==="dark"||a==="light")document
           </div>
           <figcaption>Each figure holds as many of this kernel's blocks as the SM does. The outlined resource is the one that stopped admission; the others keep unused room.</figcaption>
         </section>
-        <figure class="panel">
-          <h3>One block draws from four budgets at once</h3>
-          <p class="idea">The same four resources as a calculation. Each arrow carries what one block costs a budget; each budget divides its capacity by that cost and rounds down; the smallest count is the number of resident blocks, and warps and occupancy follow.</p>
-          <div class="fig" id="res-figFlow"></div>
-        </figure>
         <div class="legend">
           <span><i class="sw" style="background:var(--c-sm)"></i>warp slots / threads</span>
           <span><i class="sw" style="background:var(--c-cache)"></i>registers</span>
@@ -242,7 +235,7 @@ try{var a=localStorage.getItem("appearance");if(a==="dark"||a==="light")document
           <span><i class="sw" style="background:var(--c-off)"></i>unused room</span>
           <span><i class="sw" style="background:var(--c-hover)"></i>the limit that binds</span>
         </div>
-        <p class="note">The model counts whole blocks against four budgets, as the lesson above does. The CUDA occupancy calculator adds what it leaves out: a per-block shared-memory reservation and allocation granularity, and registers allocated per partition — a block's warps rounded up to the partition count, each partition's quarter of the file filled separately — plus launch-bounds and cluster effects.</p>
+        <p class="note">The calculator counts whole blocks against the four budgets, as the lesson does. NVIDIA's occupancy calculator adds what it leaves out: a per-block shared-memory reservation and allocation granularity, registers allocated per partition (a block's warps rounded up to the partition count, each partition's share filled separately), launch bounds and clusters.</p>
         <div class="note" id="res-sources"></div>
       </section>
     </div>
@@ -363,11 +356,10 @@ globalThis.AtlasResidency = (function () {
       const cc = a.compute_capability;
       return [
         ['compute capability', cc || '—', cc ? basisFor(view, 'compute_capability') : 'unknown'],
-        ['threads per SM', '—', 'unknown'], ['warps per SM', '—', 'unknown'], ['resident blocks per SM', '—', 'unknown'],
-        ['registers per SM', '—', 'unknown'],
-        ['register file', pt.register_kb && st.partitions ? pt.register_kb * st.partitions + ' KB = ' + st.partitions + ' × ' + pt.register_kb + ' KB' : '—', pt.register_kb && st.partitions ? worst('arithmetic', basisFor(view, 'sm_template.partitions'), basisFor(view, 'sm_template.partition.register_kb')) : 'unknown'],
+        ['threads per SM', '—', 'unknown'], ['warps per SM', '—', 'unknown'], ['warp slots per scheduler', '—', 'unknown'],
+        ['register file', pt.register_kb && st.partitions ? fmtN(pt.register_kb * 256 * st.partitions) + ' regs (32 bits) = ' + pt.register_kb * st.partitions + ' KB' : '—', pt.register_kb && st.partitions ? worst('arithmetic', basisFor(view, 'sm_template.partitions'), basisFor(view, 'sm_template.partition.register_kb')) : 'unknown'],
         ['shared memory pool', st.shared_max_kb && st.l1_shared_kb ? st.shared_max_kb + ' KB of ' + st.l1_shared_kb + ' KB L1/shared' : '—', st.shared_max_kb ? worst(basisFor(view, 'sm_template.shared_max_kb'), basisFor(view, 'sm_template.l1_shared_kb')) : 'unknown'],
-        ['shared memory per block', '—', 'unknown'], ['threads per block', '—', 'unknown'],
+        ['shared memory per block', '—', 'unknown'], ['resident blocks per SM', '—', 'unknown'], ['threads per block', '—', 'unknown'],
         ['warp schedulers', st.partitions ? st.partitions * (pt.warp_schedulers || 1) + ', one per partition' : '—', st.partitions ? worst(basisFor(view, 'sm_template.partitions'), basisFor(view, 'sm_template.partition.warp_schedulers')) : 'unknown'],
       ];
     }
@@ -377,8 +369,7 @@ globalThis.AtlasResidency = (function () {
       ['threads per SM', fmtN(L.threads_per_sm), b.threads_per_sm],
       ['warps per SM', String(L.warps_per_sm), b.warps_per_sm],
       ['warp slots per scheduler', String(L.slots_per_scheduler), b.slots_per_scheduler],
-      ['registers per SM', fmtN(L.regs_per_sm), b.regs_per_sm],
-      ['register file', L.register_file_kb + ' KB = ' + L.partitions + ' × ' + L.register_kb + ' KB', b.register_file_kb],
+      ['register file', fmtN(L.regs_per_sm) + ' regs (32 bits) = ' + L.register_file_kb + ' KB', worst(b.regs_per_sm, b.register_file_kb)],
       ['shared memory pool', L.shared_pool_kb + ' KB of ' + L.l1_kb + ' KB L1/shared', worst(b.shared_pool_kb, b.l1_kb)],
       ['shared memory per block', L.shared_block_default_kb + ' KB default, ' + L.shared_block_max_kb + ' KB opt-in', worst(b.shared_block_default_kb, b.shared_block_max_kb)],
       ['resident blocks per SM', String(L.blocks_per_sm), b.blocks_per_sm],
@@ -387,24 +378,33 @@ globalThis.AtlasResidency = (function () {
     ];
   }
   // The eight definitions as [heading, swatch token | null, text]: the reference's wording with this GPU's numbers.
-  function defTexts(L, view) {
+  function defTexts(L, view, ill) {
     const pt = ((view.architecture || {}).sm_template || {}).partition || {};
+    const here = ill ? `On a compute capability ${L.compute_capability} GPU` : 'On this GPU';
     const lanes = fp32Lanes(view);
     const P = L.partitions, S = L.slots_per_scheduler, W = L.warps_per_sm, Tn = L.threads_per_sm, B = L.blocks_per_sm;
     const tensor = pt.tensor_core_gen ? ', and one tensor core' : '';
     return [
-      ['Warp', null, 'Threads do not run one by one. The SM groups them in 32s, and the 32 execute the same instruction together. That group is a warp. A block of 256 threads is 8 warps. Everything the SM schedules, it schedules per warp.'],
+      ['Warp', null, 'Threads do not run one by one. The SM groups them in 32s, and the 32 execute the same instruction together. That group is a warp. Everything the SM schedules, it schedules per warp.'],
       ['Scheduler and partition', null, `The SM is built as ${P} partitions. Each has its own warp scheduler, its own ${L.register_kb} KB share of the register file, ${lanes} lanes${tensor}. ${P} schedulers means ${P} warps can issue an instruction in the same clock. A block's warps are spread across the ${P} partitions.`],
-      ['Warp slot', 'sm', `A scheduler can only issue from a warp it is holding: its program counter, its register assignment, whether it is waiting on memory. Each scheduler holds ${S} such warps — the SM's ${W} warp slots split evenly over its ${P} schedulers. ${P} times ${S} is ${W} warp slots, which is why the SM holds at most ${fmtN(Tn)} threads. A block needs a free slot for every one of its warps before it can start.`],
-      [`Why ${W} slots when only ${P} issue at once`, null, `An instruction takes many clocks to finish, and a memory load takes hundreds. So each scheduler switches among its warps: issue from one, next clock from another whose data has arrived. All resident warps are in flight; one per scheduler issues in any one clock. With many warps per scheduler there is nearly always one ready, and the SM stays busy. With few, clocks are lost waiting. The share of the ${W} slots that are filled is the occupancy.`],
-      ['Register file', 'cache', `Each partition has ${L.register_kb} KB of registers, ${L.register_file_kb} KB per SM, ${fmtN(L.regs_per_sm)} registers of 32 bits. The compiler decides how many registers one thread uses. When a block starts, every warp gets that many times 32, rounded up to a unit of ${L.reg_alloc_unit}, and keeps them until the block ends. Threads times registers is the cost, so a block with more threads or more registers per thread takes a bigger share.`],
-      ['Shared memory', 'mem', `The SM has ${L.l1_kb} KB of memory that serves as both L1 cache and shared memory. Up to ${L.shared_pool_kb} KB of it can be given to shared memory. A block's shared memory is set when it starts and held until it ends. One block may take ${L.shared_block_default_kb} KB by default (the CUDA runtime's limit), or up to ${L.shared_block_max_kb} KB after an opt-in call (cudaFuncSetAttribute).`],
-      ['Block table', 'lane_fp64', `The SM keeps a table of the blocks it is running: their ids, their barrier state for __syncthreads, where their shared memory starts. On this GPU the table has ${B} entries. Even very small blocks stop at ${B} per SM.`],
+      ['Warp slot', null, `A scheduler can only issue from a warp it is holding: its program counter, its register assignment, whether it is waiting on memory. Each scheduler holds ${S} such warps — the SM's ${W} warp slots split evenly over its ${P} schedulers. ${P} times ${S} is ${W} warp slots, which is why the SM holds at most ${fmtN(Tn)} threads. A block needs a free slot for every one of its warps before it can start.`],
+      [`Why ${W} slots when only ${P} issue at once`, null, `A scheduler issues one instruction per clock, but that instruction takes many clocks to finish, and a memory load takes hundreds. The warp that issued it must wait for the result. The scheduler does not wait with it. In the next clock it issues an instruction from a different warp, one that is ready. Each clock it picks any ready warp among the ${S} it holds. With many warps resident there is almost always a ready one, so no clock is wasted. With few, the scheduler often finds every warp waiting, and the clock is lost. Occupancy is the share of the ${W} slots that are filled.`],
+      ['Register file', null, `Each partition has ${fmtN(L.register_kb * 256)} registers of 32 bits, ${L.register_kb} KB; the SM has ${fmtN(L.regs_per_sm)} registers (32 bits) = ${L.register_file_kb} KB. The compiler decides how many registers one thread uses. When a block starts, every warp gets that many times 32, rounded up to a unit of ${L.reg_alloc_unit}, and keeps them until the block ends. Threads times registers is the cost, so a block with more threads or more registers per thread takes a bigger share.`],
+      ['Shared memory', null, `The SM has ${L.l1_kb} KB of memory that serves as both L1 cache and shared memory. Up to ${L.shared_pool_kb} KB of it can be given to shared memory. A block's shared memory is set when it starts and held until it ends. One block may take ${L.shared_block_default_kb} KB by default, or up to ${L.shared_block_max_kb} KB with an opt-in call (cudaFuncSetAttribute).`],
+      ['Block table', null, `The SM keeps a table of the blocks it is running: their ids, their barrier state for __syncthreads, where their shared memory starts. ${here} the table has ${B} entries. Even very small blocks stop at ${B} per SM.`],
       ['The rule', null, 'A block is admitted only whole. Each resource allows a whole number of blocks, rounded down, and the SM holds the smallest of the four counts.'],
     ];
   }
+  // The most registers per thread at which `slots` warps still fit one partition's share of the file, with the
+  // per-warp allocation unit respected (Ada: 40 — at 41..48 a warp takes 1,536 and 12 × 1,536 exceed 16,384).
+  function regsPerThreadLimit(L, slots) {
+    const share = L.regs_per_sm / L.partitions;
+    let best = 0;
+    for (let r = 1; r <= L.regs_per_thread_max; r++) { if (slots * Math.ceil((r * 32) / L.reg_alloc_unit) * L.reg_alloc_unit <= share) best = r; }
+    return best;
+  }
   const PRESETS = [{ id: 'scratch', label: 'matmul_scratch tiled: 16×16, 2 KB', tpb: 256, smem: 2, regs: 32 }, { id: 'blog', label: 'blog shared-memory kernel: 32×32, 8 KB', tpb: 1024, smem: 8, regs: 32 }];
-  return { BASIS_RANK, worst, basisFor, rowBasis, limitsFor, percent, clampInputs, model, fp32Lanes, facts, defTexts, fmtN, ORDER, NAMES, PRESETS };
+  return { BASIS_RANK, worst, basisFor, rowBasis, limitsFor, percent, clampInputs, model, fp32Lanes, facts, defTexts, regsPerThreadLimit, fmtN, ORDER, NAMES, PRESETS };
 })();
 </script>
 <script src="/vendor/three-0.160.0/three.min.js"></script>
@@ -1065,7 +1065,6 @@ globalThis.AtlasResidency = (function () {
   const escT = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
   const T = (x, y, s, cls, anchor) => `<text x="${x}" y="${y}"${cls ? ` class="${cls}"` : ''}${anchor ? ` text-anchor="${anchor}"` : ''}>${escT(s)}</text>`;
   const pctS = (v) => `${RES.percent(v)}%`;
-  const RES_DEFS = `<defs><marker id="res-ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"/></marker></defs>`;
   const ghostFig = (W, H, label) => `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${escT(label)}"><rect x="8" y="8" width="${W - 16}" height="${H - 16}" rx="6" class="nofit"/>${T(W / 2, H / 2 - 4, '?', 'big', 'middle')}${T(W / 2, H / 2 + 16, label, 'm', 'middle')}</svg>`;
   // A grid's geometry from its count: fixed columns, rows from the count, the cell from the row width.
   const grid = (n, cols, rowW, gx) => { const rows = Math.max(1, Math.ceil(n / cols)); const cw = (rowW - (cols - 1) * gx) / cols; return { cols, rows, cw }; };
@@ -1080,7 +1079,7 @@ globalThis.AtlasResidency = (function () {
     const P = L.partitions, S = L.slots_per_scheduler, B = L.blocks_per_sm;
     const sg = grid(S, 4, 100, 4), bg = grid(B, 6, 130, 4);
     const px0 = 20, py0 = 30, pg = 10, pw = Math.floor((4 * 128 - pg - (P - 1) * pg) / P);
-    const slotsH = sg.rows * 16, ph = Math.max(42 + slotsH + 62, 30 + bg.rows * 16 + 56);
+    const slotsH = sg.rows * 16, ph = Math.max(48 + slotsH + 62, 30 + bg.rows * 16 + 56);
     const ly = py0 + ph + 12, W = 760, H = ly + 56;
     let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="An SM schematic: ${P} partitions, each with a scheduler holding ${S} warp slots and a ${L.register_kb} KB slice of the register file; a ${L.l1_kb} KB L1/shared memory of which ${L.shared_pool_kb} KB can be shared memory; and a block table with ${B} entries.">`;
     const lw = P * (pw + pg) - pg;
@@ -1090,11 +1089,12 @@ globalThis.AtlasResidency = (function () {
       const x = px0 + p * (pw + pg);
       s += `<rect x="${x}" y="${py0}" width="${pw}" height="${ph}" class="box" rx="6"/>`;
       s += T(x + 10, py0 + 18, `partition ${p}`, 'cap');
-      s += T(x + 10, py0 + 34, 'warp scheduler', 'm');
-      for (let i = 0; i < S; i++) { const cx = x + 10 + (i % 4) * 25, cy = py0 + 42 + Math.floor(i / 4) * 16; s += `<rect x="${cx}" y="${cy}" width="21" height="12" rx="2" class="lim-threads"/>`; }
-      s += T(x + 10, py0 + 42 + slotsH + 14, `${S} warp slots`, 'm');
-      s += `<rect x="${x + 10}" y="${py0 + 42 + slotsH + 22}" width="${pw - 20}" height="14" rx="2" class="lim-regs"/>`;
-      s += T(x + 10, py0 + 42 + slotsH + 50, `registers ${L.register_kb} KB`, 'm');
+      s += `<rect x="${x + 10}" y="${py0 + 24}" width="${pw - 20}" height="16" rx="3" class="issue"/>`;
+      s += T(x + pw / 2, py0 + 36, 'warp scheduler', 'cap', 'middle');
+      for (let i = 0; i < S; i++) { const cx = x + 10 + (i % 4) * 25, cy = py0 + 48 + Math.floor(i / 4) * 16; s += `<rect x="${cx}" y="${cy}" width="21" height="12" rx="2" class="lim-threads"/>`; }
+      s += T(x + 10, py0 + 48 + slotsH + 14, `${S} warp slots`, 'm');
+      s += `<rect x="${x + 10}" y="${py0 + 48 + slotsH + 22}" width="${pw - 20}" height="14" rx="2" class="lim-regs"/>`;
+      s += T(x + 10, py0 + 48 + slotsH + 50, `registers ${L.register_kb} KB`, 'm');
     }
     s += `<rect x="${px0}" y="${ly}" width="${lw}" height="22" rx="3" class="empty"/>`;
     const poolW = lw * L.shared_pool_kb / L.l1_kb, l1Rest = L.l1_kb - L.shared_pool_kb;
@@ -1121,13 +1121,14 @@ globalThis.AtlasResidency = (function () {
     const st = v.architecture.sm_template || {}, pt = st.partition || {};
     const P = L.partitions, S = L.slots_per_scheduler, W = L.warps_per_sm, Tn = L.threads_per_sm, B = L.blocks_per_sm, N = L.regs_per_sm;
     const lanes = RES.fp32Lanes(v), hasTc = !!pt.tensor_core_gen;
-    { // Warp: a 256-thread block as 8 rows of 32
-      const Wd = 400, H = 150, x0 = 56, y0 = 30, c = 8, g = 2;
-      let s = `<svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="A block of 256 threads drawn as 8 rows of 32; each row is one warp and executes one instruction at a time.">`;
-      for (let w = 0; w < 8; w++) { const y = y0 + w * (c + g + 2); s += T(x0 - 6, y + c, `warp ${w}`, 'm', 'end'); for (let t = 0; t < 32; t++) s += `<rect x="${x0 + t * (c + g)}" y="${y}" width="${c}" height="${c}" rx="1" class="${w % 2 ? 'blk2' : 'blk'}"/>`; }
-      s += `<rect x="${x0 - 2}" y="${y0 + 2 * 12 - 2}" width="${32 * (c + g) + 2}" height="${c + 4}" class="bind" rx="2"/>`;
-      s += T(x0, y0 - 10, 'one instruction runs on all 32 threads of a warp', 'm');
-      s += T(x0, y0 + 8 * 12 + 14, 'block of 256 threads = 8 warps · 32 threads each', '');
+    { // Warp: 32 threads in one row
+      const Wd = 400, H = 84, x0 = 40, y0 = 34, c = 9, g = 2;
+      let s = `<svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="One warp: 32 threads in a row, executing the same instruction together.">`;
+      s += T(x0, y0 - 12, 'one instruction, issued once, runs on all 32 threads', 'm');
+      s += T(x0 - 6, y0 + c, 'warp', 'm', 'end');
+      for (let t = 0; t < 32; t++) s += `<rect x="${x0 + t * (c + g)}" y="${y0}" width="${c}" height="${c}" rx="1" class="blk"/>`;
+      s += `<rect x="${x0 - 2}" y="${y0 - 2}" width="${32 * (c + g) + 2}" height="${c + 4}" class="bind" rx="2"/>`;
+      s += T(x0, y0 + c + 22, '32 threads = 1 warp, the unit the scheduler issues', '');
       out.defWarp = s + '</svg>';
     }
     { // Scheduler and partition
@@ -1186,17 +1187,42 @@ globalThis.AtlasResidency = (function () {
       s += T(x0, y + 14, 'clock →   teal = issues · pale = waiting · grey = idle', 'm');
       out.defLatency = s + '</svg>';
     }
-    { // Register file: the N registers and one block's take (256 threads × 32 regs)
-      const Wd = 420, H = 112, x0 = 14, bw = 372, y0 = 36, bh = 20, take = 8192, fit = Math.floor(N / take), fit64 = Math.floor(N / (2 * take));
-      let s = `<svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="The SM's ${fmtN(N)} registers as a bar in ${P} partition shares; one 256-thread block with 32 registers per thread takes ${fmtN(take)} of them, so ${fit} such blocks fit.">`;
-      s += T(x0, y0 - 18, `register file · ${fmtN(N)} regs = ${P} partitions × ${fmtN(N / P)}`, 'cap');
-      s += `<rect x="${x0}" y="${y0}" width="${bw}" height="${bh}" rx="3" class="empty"/>`;
-      const f = take / N;
-      for (let b = 0; b < fit; b++) s += `<rect x="${(x0 + b * f * bw).toFixed(1)}" y="${y0}" width="${(f * bw - 2).toFixed(1)}" height="${bh}" rx="2" class="lim-regs" opacity="${b === 0 ? 1 : 0.45}"/>`;
-      for (let q = 1; q < P; q++) s += `<line x1="${x0 + q * bw / P}" x2="${x0 + q * bw / P}" y1="${y0 - 4}" y2="${y0 + bh + 4}" class="axis"/>`;
-      s += `<rect x="${x0 - 1.5}" y="${y0 - 1.5}" width="${(f * bw + 1).toFixed(1)}" height="${bh + 3}" class="bind" rx="3"/>`;
-      s += T(x0, y0 + bh + 18, `one block: 8 warps × 32 regs × 32 = ${fmtN(take)}, held to the end`, '');
-      s += T(x0, y0 + bh + 34, `${fit} such blocks fit; at 64 regs/thread only ${fit64}`, 'm');
+    { // Register file: how the registers divide, file → partition → warp → thread (32 regs/thread example)
+      const regs = 32, perWarp = Math.ceil((regs * 32) / L.reg_alloc_unit) * L.reg_alloc_unit, share = N / P, warpsFit = Math.floor(share / perWarp), slots = S;
+      const held = Math.min(slots, warpsFit), used = held * perWarp, limit = RES.regsPerThreadLimit(L, slots);
+      const Wd = 460, H = 262, x0 = 14, bw = 432, bh = 18;
+      let s = `<svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="The register file divided three times: ${fmtN(N)} registers into ${P} partitions of ${fmtN(share)}; one partition into warp allocations of ${fmtN(perWarp)}; one warp allocation into 32 threads of ${regs} registers.">`;
+      const zoom = (xa, xb, yTop, yBot) => `<line x1="${xa.toFixed(1)}" y1="${yTop}" x2="${x0}" y2="${yBot}" class="grid"/><line x1="${xb.toFixed(1)}" y1="${yTop}" x2="${x0 + bw}" y2="${yBot}" class="grid"/>`;
+      // level 1: the SM's file, its partitions
+      const y = 22;
+      s += T(x0, y - 7, `SM register file · ${fmtN(N)} regs (32 bits) = ${L.register_file_kb} KB`, 'cap');
+      for (let q = 0; q < P; q++) {
+        const x = x0 + q * bw / P;
+        s += `<rect x="${(x + 1).toFixed(1)}" y="${y}" width="${(bw / P - 2).toFixed(1)}" height="${bh}" rx="2" class="lim-regs" opacity="${q === 0 ? 1 : 0.45}"/>`;
+        s += T(x + bw / (2 * P), y + 13, `partition ${q}`, '', 'middle');
+      }
+      s += T(x0, y + bh + 14, `${P} partitions × ${fmtN(share)} regs`, 'm');
+      // level 2: one partition, its warps' allocations at the example's regs/thread
+      const y2 = y + bh + 62;
+      s += zoom(x0, x0 + bw / P, y + bh, y2);
+      s += T(x0, y2 - 7, `one partition · ${fmtN(share)} regs = ${L.register_kb} KB`, 'cap');
+      const ww = bw / warpsFit;
+      for (let w = 0; w < warpsFit; w++) {
+        const x = x0 + w * ww, on = w < held;
+        s += `<rect x="${(x + 1).toFixed(1)}" y="${y2}" width="${(ww - 2).toFixed(1)}" height="${bh}" rx="2" class="${on ? 'lim-regs' : 'empty'}" opacity="${w === 0 ? 1 : on ? 0.55 : 1}"/>`;
+        if (w < 3 || w === held - 1) s += T(x + ww / 2, y2 + 13, `w${w}`, '', 'middle');
+      }
+      s += T(x0, y2 + bh + 14, `each warp at ${regs} regs/thread takes 32 × ${regs} = ${fmtN(perWarp)}`, 'm');
+      s += T(x0, y2 + bh + 28, `${held} ${held === slots ? 'slots' : 'warps'} × ${fmtN(perWarp)} = ${fmtN(used)} used · ${fmtN(share - used)} free${share - used > 0 ? ' (grey)' : ''}`, 'm');
+      s += T(x0, y2 + bh + 42, `at more than ${limit} regs/thread the ${slots} warps no longer fit`, 'm');
+      // level 3: one warp's allocation, 32 threads
+      const y3 = y2 + bh + 92;
+      s += zoom(x0, x0 + ww, y2 + bh, y3);
+      s += T(x0, y3 - 7, `one warp's allocation · ${fmtN(perWarp)} regs = 32 threads × ${regs}`, 'cap');
+      const tw = bw / 32;
+      for (let t = 0; t < 32; t++) { const x = x0 + t * tw; s += `<rect x="${(x + 0.5).toFixed(1)}" y="${y3}" width="${(tw - 1).toFixed(1)}" height="${bh}" rx="1" class="lim-regs" opacity="${t === 0 ? 1 : 0.55}"/>`; }
+      s += T(x0 + tw / 2, y3 + 13, 't0', '', 'middle');
+      s += T(x0, y3 + bh + 14, `one thread · ${regs} regs × 32 bits = ${regs * 4} B · set by the compiler`, 'm');
       out.defRegs = s + '</svg>';
     }
     { // Shared memory: the L1 split and per-block allocations
@@ -1267,9 +1293,10 @@ globalThis.AtlasResidency = (function () {
       out.liveSlots = s + '</svg>';
     }
     { // Register file
-      const Wd = 420, H = 100, x0 = 14, bw = 392, y0 = 30, bh = 22;
+      const Wd = 420, H = 114, x0 = 14, bw = 392, y0 = 44, bh = 22;
       let s = `<svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="The register file with ${r.resident} blocks' registers allocated, ${fmtN(r.resident * r.regsPerBlock)} of ${fmtN(L.regs_per_sm)}.">`;
-      s += T(x0, y0 - 10, `${fmtN(L.regs_per_sm)} registers · one block takes ${fmtN(r.regsPerBlock)} (${r.warpsPerBlock} warps × ${fmtN(r.regsPerWarp)})`, 'm');
+      s += T(x0, y0 - 24, `${fmtN(L.regs_per_sm)} regs (32 bits) = ${L.register_file_kb} KB`, 'm');
+      s += T(x0, y0 - 10, `one block takes ${fmtN(r.regsPerBlock)} (${r.warpsPerBlock} warps × ${fmtN(r.regsPerWarp)})`, 'm');
       s += `<rect x="${x0}" y="${y0}" width="${bw}" height="${bh}" rx="3" class="empty"/>`;
       const f = r.regsPerBlock / L.regs_per_sm;
       for (let b = 0; b < r.resident; b++) s += `<rect x="${(x0 + b * f * bw).toFixed(1)}" y="${y0}" width="${Math.max(f * bw - 1.5, 0.8).toFixed(1)}" height="${bh}" rx="2" class="lim-regs"/>`;
@@ -1279,9 +1306,10 @@ globalThis.AtlasResidency = (function () {
       out.liveRegs = s + '</svg>';
     }
     { // Shared memory
-      const Wd = 420, H = 100, x0 = 14, bw = 392, y0 = 30, bh = 22;
+      const Wd = 420, H = 114, x0 = 14, bw = 392, y0 = 44, bh = 22;
       let s = `<svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="The shared memory pool with ${r.resident} blocks' allocations, ${r.resident * r.smem} of ${L.shared_pool_kb} KB.">`;
-      s += T(x0, y0 - 10, `${L.l1_kb} KB L1/shared · pool up to ${L.shared_pool_kb} KB · one block takes ${r.smem} KB${r.optIn ? ' (needs the opt-in)' : ''}`, 'm');
+      s += T(x0, y0 - 24, `${L.l1_kb} KB L1/shared · pool up to ${L.shared_pool_kb} KB`, 'm');
+      s += T(x0, y0 - 10, `one block takes ${r.smem} KB${r.optIn ? ' (needs the opt-in)' : ''}`, 'm');
       s += `<rect x="${x0}" y="${y0}" width="${bw}" height="${bh}" rx="3" class="empty"/>`;
       const poolW = bw * L.shared_pool_kb / L.l1_kb;
       s += `<rect x="${x0}" y="${y0}" width="${poolW.toFixed(1)}" height="${bh}" rx="3" class="poolbg"/>`;
@@ -1302,49 +1330,6 @@ globalThis.AtlasResidency = (function () {
       out.liveTable = s + '</svg>';
     }
     return out;
-  }
-
-  // ---- flow: one block, four budgets
-  function resFlow(L, r) {
-    const Wd = 800, H = 372;
-    let s = `<svg viewBox="0 0 ${Wd} ${H}" role="img" aria-label="One block costs each of four SM budgets; each budget allows a count; the minimum, ${r.resident}, times ${r.warpsPerBlock} warps per block gives ${r.warps} warps and ${pctS(r.occ)} occupancy.">${RES_DEFS}`;
-    const qx = 300, qw = 236, qh = 66, qgap = 12, qy0 = 14;
-    const rowY = (i) => qy0 + i * (qh + qgap);
-    const bx = 16, bw = 150, bh = 128, by = rowY(1.5) + qh / 2 - bh / 2;
-    s += `<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" class="box" rx="6"/>`;
-    s += T(bx + 12, by + 20, 'one block', 'cap');
-    s += T(bx + 12, by + 44, `${r.tpb} threads`) + T(bx + 12, by + 58, `= ${r.warpsPerBlock} warps`, 'm');
-    s += T(bx + 12, by + 82, `${r.smem} KB shared`);
-    s += T(bx + 12, by + 106, `${r.regs} regs / thread`);
-    const budgets = [
-      { k: 'threads', title: 'thread slots', cap: fmtN(L.threads_per_sm), cost: `${r.tpb} threads`, costNum: fmtN(r.tpb), why: '', fromY: by + 40 },
-      { k: 'smem', title: 'shared memory pool', cap: `${L.shared_pool_kb} KB`, cost: `${r.smem} KB`, costNum: `${r.smem} KB`, why: '', fromY: by + 78 },
-      { k: 'regs', title: 'register file', cap: fmtN(L.regs_per_sm), cost: `${fmtN(r.regsPerBlock)} regs`, costNum: fmtN(r.regsPerBlock), why: `= ${r.tpb} × ${r.regs}, rounded per warp`, fromY: by + 102 },
-      { k: 'cap', title: 'block slots', cap: String(L.blocks_per_sm), cost: '1 block', costNum: '1', why: '', fromY: by + 124 },
-    ];
-    const mx = 600, mw = 160, my = rowY(1.5) + qh / 2;
-    budgets.forEach((b, i) => {
-      const y = rowY(i), on = r.binding.includes(b.k);
-      const x1 = bx + bw, y1 = b.fromY, xs = x1 + 70, x2 = qx - 4, y2 = y + qh / 2, cx = (xs + x2) / 2;
-      s += `<path d="M${x1},${y1} L${xs},${y1} C${cx},${y1} ${cx},${y2} ${x2},${y2}" class="arrow${on ? ' on' : ''}"/>`;
-      s += T(x1 + 6, y1 - 5, b.cost, 'm');
-      s += `<rect x="${qx}" y="${y}" width="${qw}" height="${qh}" class="box" rx="6"/>`;
-      s += `<rect x="${qx}" y="${y}" width="6" height="${qh}" class="lim-${b.k}" rx="2"/>`;
-      s += T(qx + 16, y + 18, b.title, 'cap');
-      s += T(qx + 16, y + 38, b.k === 'smem' && r.smem === 0 ? `no shared memory → ${r.by[b.k]} (the table's count)` : `⌊ ${b.cap} / ${b.costNum} ⌋ = ${r.by[b.k]}`);
-      if (b.why) s += T(qx + 16, y + 55, b.why, 'm');
-      if (on) s += `<rect x="${qx - 2}" y="${y - 2}" width="${qw + 4}" height="${qh + 4}" class="bind" rx="7"/>`;
-      s += `<path d="M${qx + qw},${y + qh / 2} C${qx + qw + 36},${y + qh / 2} ${mx - 36},${my} ${mx - 4},${my}" class="arrow${on ? ' on' : ''}"/>`;
-    });
-    const boxH = 48, step = 90, ys = [my, my + step, my + 2 * step];
-    const labels = [['smallest wins', `min = ${r.resident} block${r.resident === 1 ? '' : 's'}`], ['resident warps', `${r.warps} of ${L.warps_per_sm}`], ['occupancy', pctS(r.occ)]];
-    const ops = [`× ${r.warpsPerBlock} warps`, `÷ ${L.warps_per_sm} slots`];
-    ys.forEach((yc, i) => {
-      s += `<rect x="${mx}" y="${yc - boxH / 2}" width="${mw}" height="${boxH}" class="box" rx="6"/>`;
-      s += T(mx + 12, yc - 6, labels[i][0], 'cap') + T(mx + 12, yc + 15, labels[i][1], i === 2 ? 'big' : '');
-      if (i < 2) { s += `<path d="M${mx + 40},${yc + boxH / 2} L${mx + 40},${yc + step - boxH / 2 - 4}" class="arrow on"/>`; s += T(mx + 50, yc + step / 2 + 4, ops[i], 'm'); }
-    });
-    return s + '</svg>';
   }
 
   function resReadInputs(L) {
@@ -1368,7 +1353,6 @@ globalThis.AtlasResidency = (function () {
     resResult(resL, r);
     const live = resLive(resL, r);
     for (const k of Object.keys(live)) rq(k).innerHTML = live[k];
-    rq('figFlow').innerHTML = resFlow(resL, r);
   }
   function resSources(nums) {
     const el = rq('sources'); el.innerHTML = '';
@@ -1395,10 +1379,13 @@ globalThis.AtlasResidency = (function () {
     banner.hidden = !resIll;
     if (resIll) {
       const hasRow = typeof a.compute_capability === 'string' && !!(CAT.compute_capabilities || {})[a.compute_capability];
-      banner.textContent = (hasRow ? `The SM layout of ${a.name} (partitions, register file, L1/shared) is not published, so the per-SM limits cannot be placed.` : `Occupancy limits for ${a.name} are not published.`) +
+      banner.textContent = (hasRow ? `The SM layout of the ${v.product.name} (partitions, register file, L1/shared) is not published, so the per-SM limits cannot be placed.` : `Occupancy limits for the ${v.product.name} are not published.`) +
         (resL ? ` The lesson below is drawn for compute capability ${resL.compute_capability} (illustrative); the calculator is off.` : ' The calculator is off.');
     }
     rq('illChip').hidden = !resIll;
+    const lessonWord = !resIll && resL ? RES.worst(...Object.values(resL.basis)) : null, lessonChip = rq('lessonChip');
+    lessonChip.hidden = !(lessonWord === 'assumed' || lessonWord === 'press');
+    if (!lessonChip.hidden) { lessonChip.className = 'basis ' + lessonWord; lessonChip.textContent = lessonWord; }
     for (const el of Object.values(resIn)) el.disabled = resIll;
     for (const b of rq('presets').querySelectorAll('button')) b.disabled = resIll;
     if (key !== resRendered) {
@@ -1407,7 +1394,7 @@ globalThis.AtlasResidency = (function () {
       if (resL) {
         rq('figIntro').innerHTML = resIntro(resL);
         const lessonView = resIll ? { architecture: CAT.architectures[resIllArch] || a } : v;
-        const texts = RES.defTexts(resL, lessonView), figs = resDefFigs(resL, lessonView);
+        const texts = RES.defTexts(resL, lessonView, resIll), figs = resDefFigs(resL, lessonView);
         const ids = ['defWarp', 'defPart', 'defSlot', 'defLatency', 'defRegs', 'defSmem', 'defTable', 'defRule'];
         const defs = rq('defs'); defs.innerHTML = '';
         texts.forEach(([h, sw, text], i) => {
@@ -1424,7 +1411,6 @@ globalThis.AtlasResidency = (function () {
     if (resIll || !resL) {
       rq('result').textContent = 'Limits for this architecture are not published; the calculator is off.';
       for (const k of ['liveSlots', 'liveRegs', 'liveSmem', 'liveTable']) rq(k).innerHTML = ghostFig(420, 100, 'not published');
-      rq('figFlow').innerHTML = ghostFig(800, 160, 'not published');
     } else resRenderKernel();
     resSources((L ? L.sources : []).concat(sourcesOf(a), sourcesOf(d)));
   }
